@@ -34,6 +34,4 @@ def collect_all_info(url,properties=[],filters=[]): #This function should work f
         after+=limit
         response=json_description_contacts(url,limit,after,properties,filters)
         collect_data+=response.json()['results']
-    response=json_description_contacts(url,loop%100,after,properties,filters)
-    collect_data+=response.json()['results']
     return collect_data
