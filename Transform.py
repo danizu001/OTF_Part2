@@ -2,6 +2,9 @@ import req_client_data
 import pandas as pd
 import Country_functions
 import Email_functions
+import Phone_functions
+import Request_html_country_code
+exceptions=['England','Scotland', 'Wales','Northern Ireland']
 
 url='https://api.hubapi.com/crm/v3/objects/contacts/search/'
 properties=[ "raw_email", "country","phone", "technical_test___create_date", "industry", "address","hs_object_id"]
@@ -27,10 +30,11 @@ city_sear=[i[1] for i in result_countries]
 df_clients['country found']=''
 df_clients['city found']=''
 df_clients['found email']=''
+df_clients['fixed_phone number']=''
 #Add the correct values to the column
 df_clients=Country_functions.add_columns_country_city(countries_sear, city_sear, df_clients)
 #Add the column with the correct values of email
-df_client=Email_functions.add_column_email(df_clients)
-
-
-
+df_clients=Email_functions.add_column_email(df_clients)
+countries_info=Request_html_country_code.get_table_code()
+country_code=[(Phone_functions.get_phone_code(i,countries_info),i) if i not in exceptions else ('44',i) for i in set(countries_sear)]
+df_clients=Phone_functions.add_column_phone(df_clients,country_code)
