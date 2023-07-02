@@ -1,7 +1,7 @@
 import req_client_data
 import pandas as pd
 import Country_functions
-
+import Email_functions
 
 url='https://api.hubapi.com/crm/v3/objects/contacts/search/'
 properties=[ "raw_email", "country","phone", "technical_test___create_date", "industry", "address","hs_object_id"]
@@ -26,6 +26,11 @@ city_sear=[i[1] for i in result_countries]
 #Creates the new columns
 df_clients['country found']=''
 df_clients['city found']=''
+df_clients['found email']=''
 #Add the correct values to the column
 df_clients=Country_functions.add_columns_country_city(countries_sear, city_sear, df_clients)
+#Add the column with the correct values of email
+df_client=Email_functions.add_column_email(df_clients)
+
+
 
