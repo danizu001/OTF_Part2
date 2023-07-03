@@ -5,9 +5,12 @@ import Email_functions
 import Phone_functions
 import Request_html_country_code
 import Duplicate_correct
+import Load
+
 exceptions=['England','Scotland', 'Wales','Northern Ireland']
 
 url='https://api.hubapi.com/crm/v3/objects/contacts/search/'
+url_post='https://api.hubapi.com/crm/v3/objects/contacts'
 properties=[ "firstname","lastname","raw_email", "country","phone", "technical_test___create_date", "industry", "address","hs_object_id"]
 filters=[
     {
@@ -45,3 +48,5 @@ country_code=[(Phone_functions.get_phone_code(i,countries_info),i) if i not in e
 df_clients=Phone_functions.add_column_phone(df_clients,country_code)
 #Fix the dataframe to delte the duplicates as you want
 df_clients_no_dup=Duplicate_correct.correct_duplicate(df_clients)
+Load.edit_send_info(url_post, df_clients_no_dup)
+

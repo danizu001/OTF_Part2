@@ -1,4 +1,5 @@
 import pandas as pd
+from datetime import datetime
 def correct_duplicate(df_clients):
     df_clients['full name']=df_clients['properties.firstname']+' '+df_clients['properties.lastname']# Create the full name in a new column
     unique_names=list(set(df_clients['full name']))#Get a list with the unique names
@@ -31,4 +32,7 @@ def correct_duplicate(df_clients):
                     if group_array[i].iloc[k][j]!=None:
                         def_array[i][j]=group_array[i].iloc[k][j]#Change the value of the indexes in nan with the previous sorted values 
                         break
-    return pd.DataFrame(def_array)
+    def_array=pd.DataFrame(def_array)
+    def_array.columns=['temporary_id', 'firstname', 'email', 'country','city', 'phone', 'original_industry', 'original_create_date']
+    def_array['original_create_date'] = def_array['original_create_date'].map(lambda x: (x[:10]))
+    return def_array
