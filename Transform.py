@@ -4,10 +4,11 @@ import Country_functions
 import Email_functions
 import Phone_functions
 import Request_html_country_code
+import Duplicate_correct
 exceptions=['England','Scotland', 'Wales','Northern Ireland']
 
 url='https://api.hubapi.com/crm/v3/objects/contacts/search/'
-properties=[ "raw_email", "country","phone", "technical_test___create_date", "industry", "address","hs_object_id"]
+properties=[ "firstname","lastname","raw_email", "country","phone", "technical_test___create_date", "industry", "address","hs_object_id"]
 filters=[
     {
     "propertyName": "allowed_to_collect",
@@ -31,10 +32,16 @@ df_clients['country found']=''
 df_clients['city found']=''
 df_clients['found email']=''
 df_clients['fixed_phone number']=''
+df_clients['full name']=''
 #Add the correct values to the column
 df_clients=Country_functions.add_columns_country_city(countries_sear, city_sear, df_clients)
 #Add the column with the correct values of email
 df_clients=Email_functions.add_column_email(df_clients)
+#Get the country codes into a variable from web page
 countries_info=Request_html_country_code.get_table_code()
+#Get the phone code and set in the exceptions the number 44. so far are the only countries that has a problem with United Kingdom
 country_code=[(Phone_functions.get_phone_code(i,countries_info),i) if i not in exceptions else ('44',i) for i in set(countries_sear)]
+#Add the correct phone number to the data frame
 df_clients=Phone_functions.add_column_phone(df_clients,country_code)
+#Fix the dataframe to delte the duplicates as you want
+df_clients_no_dup=Duplicate_correct.correct_duplicate(df_clients)

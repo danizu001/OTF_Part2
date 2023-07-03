@@ -15,16 +15,16 @@ def get_correct_number(string):
 def add_column_phone(df_clients,country_code):#Get the email for each row
     for i in range(len(df_clients['properties.phone'])):
         for j in range(len(country_code)):
-            if df_clients['properties.phone'][i] == None:
+            if df_clients['properties.phone'][i] == None:#If there are not number phone set an empty string
                 df_clients['fixed_phone number'][i]=''
             else:
-                if df_clients['country found'][i]!='':
+                if df_clients['country found'][i]!='':#If we know the country name go ahead
                     if df_clients['country found'][i] in country_code[j][1]:
                         try:
-                            df_clients['fixed_phone number'][i]=get_correct_number(country_code[j][0]+'/'+df_clients['properties.phone'][i])
+                            df_clients['fixed_phone number'][i]=get_correct_number(country_code[j][0]+'/'+df_clients['properties.phone'][i])#add one by one the value in the correct column with the code and phone number 
                         except:
                             print(i)
                         break
                 else:
-                    df_clients['fixed_phone number'][i]=get_correct_number('XX/'+df_clients['properties.phone'][i])
+                    df_clients['fixed_phone number'][i]=get_correct_number('XX/'+df_clients['properties.phone'][i])#If we don't know the country name set a 'XX' in the country code
     return df_clients
