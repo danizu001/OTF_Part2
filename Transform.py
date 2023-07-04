@@ -42,5 +42,3 @@ def call():
     
     df_clients_no_dup.to_csv('Transform_data.csv', index=False)
     return df_clients_no_dup
-
-

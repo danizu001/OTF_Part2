@@ -19,19 +19,21 @@ def correct_duplicate(df_clients):
                 break
     group_array_nan=group_array_nan.drop(labels=drop)#Drop the values, in this case there are not single emails
     def_array=[]
-
+    for i in range(len(group_array)):
+        group_array[i]=group_array[i][['properties.hs_object_id','full name','found email','country found','city found','fixed_phone number','properties.industry','properties.technical_test___create_date']]           
     for i in range(len(group_array)):
         group_array[i]=group_array[i].sort_values(by=['properties.technical_test___create_date'], ascending=False)#Sort the values by createdAt (Remember at this time we have all grouped in a list so for example in list[0] are all the records of sara, in list[1] all of Jhon and so on)
         def_array.append(group_array[i].loc[group_array[i]['properties.technical_test___create_date'] == max(group_array[i]['properties.technical_test___create_date'].values), ["properties.hs_object_id","full name","found email","country found","city found", "fixed_phone number","properties.industry","properties.technical_test___create_date"]].iloc[0])#Detect the max value of created date and also put the data as we want and save it in a new list
         new_industry=';'+';'.join(list(set(group_array[i]['properties.industry'].values)))#Put the industry as we want
         def_array[i]['properties.industry']=new_industry#Change the value of property on the new list
-        if def_array[i].isnull().values.any():#Detect if there are one ore more values in nan
-            none_values=def_array[i].isna().index[def_array[i].isna() == None] # If exist detect the name of the index
-            for j in none_values:
+        if any(not item for item in def_array[i]):#Detect if there are one ore more values in nan
+            none_values=[not item for item in def_array[i]] # If exist detect the name of the index
+            for j in range(len(none_values)):
                 for k in range(len(group_array[i])):
-                    if group_array[i].iloc[k][j]!=None:
-                        def_array[i][j]=group_array[i].iloc[k][j]#Change the value of the indexes in nan with the previous sorted values 
-                        break
+                    if none_values[j]:
+                        if group_array[i].iloc[k][j]!='':
+                            def_array[i][j]=group_array[i].iloc[k][j]#Change the value of the indexes in nan with the previous sorted values 
+                            break
     def_array=pd.DataFrame(def_array)
     def_array.columns=['temporary_id', 'firstname', 'email', 'country','city', 'phone', 'original_industry', 'original_create_date']
     def_array['original_create_date'] = def_array['original_create_date'].map(lambda x: (x[:10]))
