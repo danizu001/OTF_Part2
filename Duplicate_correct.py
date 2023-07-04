@@ -21,8 +21,8 @@ def correct_duplicate(df_clients):
     def_array=[]
 
     for i in range(len(group_array)):
-        group_array[i]=group_array[i].sort_values(by=['createdAt'], ascending=False)#Sort the values by createdAt (Remember at this time we have all grouped in a list so for example in list[0] are all the records of sara, in list[1] all of Jhon and so on)
-        def_array.append(group_array[i].loc[group_array[i]['createdAt'] == max(group_array[i]['createdAt'].values), ["properties.hs_object_id","full name","found email","country found","city found", "fixed_phone number","properties.industry","createdAt"]].iloc[0])#Detect the max value od created date and also put the data as we want and save it in a new list
+        group_array[i]=group_array[i].sort_values(by=['properties.technical_test___create_date'], ascending=False)#Sort the values by createdAt (Remember at this time we have all grouped in a list so for example in list[0] are all the records of sara, in list[1] all of Jhon and so on)
+        def_array.append(group_array[i].loc[group_array[i]['properties.technical_test___create_date'] == max(group_array[i]['properties.technical_test___create_date'].values), ["properties.hs_object_id","full name","found email","country found","city found", "fixed_phone number","properties.industry","properties.technical_test___create_date"]].iloc[0])#Detect the max value of created date and also put the data as we want and save it in a new list
         new_industry=';'+';'.join(list(set(group_array[i]['properties.industry'].values)))#Put the industry as we want
         def_array[i]['properties.industry']=new_industry#Change the value of property on the new list
         if def_array[i].isnull().values.any():#Detect if there are one ore more values in nan
