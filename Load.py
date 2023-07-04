@@ -20,11 +20,7 @@ def edit_send_info(url,df_clients_no_dup): #This function should work for all th
     jsons=jsons.split('##')#Split the jsons in multiple lists of json
     for i in jsons:#I can't send multiple properties in a single request, may be exist but I did´nt find it
         data=json.loads(i)
-        response=json_send_contacts(url,data)
-        if response==201:
-            pass
-        else:
-            print(response)
+        json_send_contacts(url,data)
     print('finish')
     
     
