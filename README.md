@@ -27,12 +27,15 @@ If you have any public portfolio (e.g., IA, computer visión, data processing...
 About the 5 point I'm not sure if it is possible but we could save the deleted duplicates in another json with the deleted propertes but without the email because is theonly one who has a a unique ID.
 For example:
 We have this data
-    Name          Email           street           date
-   Daniel G     dany@gmail.com   Autopista        2023/07/03
-   Daniel G     dany@hotmail.com Boyaca           2021/07/03
+  |  Name    |      Email         |    street      |     date      |
+  | :---:    |       :---:        |     :---:      |      :---:    | 
+  |Daniel G  |   dany@gmail.com   |   Autopista    |   2023/07/03  |
+  | :---:    |       :---:        |     :---:      |      :---:    |
+  |Daniel G  |   dany@hotmail.com |    Boyaca      |   2021/07/03  |
 
 so we know the program is going to save the first row because is the recent date, the second row is going to delete it.
 The possibility is save the second row but without the email so we  are going to save the second row like that.
-    Name          Email           street           date
-   Daniel G                       Boyaca          2021/07/03
+   |  Name    |      Email         |    street      |     date      |
+   | :---:    |       :---:        |     :---:      |      :---:    |
+   |Daniel G  |   dany@hotmail.com |    Boyaca      |   2021/07/03  |
 And when we want to retrieve this data we will search the firstname and lastname
