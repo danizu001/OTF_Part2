@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 
 
@@ -35,3 +36,18 @@ def collect_all_info(url,properties=[],filters=[]): #This function should work f
         response=json_description_contacts(url,limit,after,properties,filters)
         collect_data+=response.json()['results']
     return collect_data
+
+def call():
+    url='https://api.hubapi.com/crm/v3/objects/contacts/search/'
+    properties=[ "firstname","lastname","raw_email", "country","phone", "technical_test___create_date", "industry", "address","hs_object_id"]
+    filters=[
+        {
+        "propertyName": "allowed_to_collect",
+        "operator": "EQ",
+        "value": "true"
+        }
+    ]
+    collected_data=collect_all_info(url,properties,filters)
+    df_clients=pd.json_normalize(collected_data)
+    df_clients.to_csv('Extract_data.csv', index=False)
+    return df_clients

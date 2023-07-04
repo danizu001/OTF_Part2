@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import datetime
+
 def correct_duplicate(df_clients):
     df_clients['full name']=df_clients['properties.firstname']+' '+df_clients['properties.lastname']# Create the full name in a new column
     unique_names=list(set(df_clients['full name']))#Get a list with the unique names
