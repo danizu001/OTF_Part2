@@ -22,16 +22,13 @@ def city_or_country(string): #This function identify the string as city or count
     except:
         return('','')
 def get_tuple_country(city):#When is a city this function detect the country
+    #This link has all the cities with their respective countries, we can create only a dictionary with United Kingdom and Ireland but if we have more clients in more countries this code will work better
     info_country=pd.read_csv('https://datahub.io/core/world-cities/r/world-cities.csv')
     index=list(info_country['name']).index(city)
     #Modify the output to a simple country name
     country=info_country.iloc[index][1]
     return country
 
-def replacements(replaces,df_clients):#Replace all the name of the countries (library geopy) that doesn't has the same name as the df
-    for i in replaces:
-        df_clients['country found'] = df_clients['country found'].replace(i[0], i[1])
-    return df_clients
 
 def add_columns_country_city(countries_sear,city_sear,df_clients):#Add the new columns with the respective value
     for i in range(len(df_clients['properties.country'])):#pass to each value of the dataframe
