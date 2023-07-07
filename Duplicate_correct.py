@@ -6,7 +6,7 @@ def correct_duplicate(df_clients):
     group_array=[None]*len(unique_names)#Create an empty array with the length of the unique names
     for i in range(len(unique_names)):
         group_array[i]=df_clients.loc[df_clients['full name'] == unique_names[i]]#Assign in each space of  the empty array all the rows with the same name in the dataframe
-        if group_array[i].empty: #save the index of the empy name to delete it after the FOR loop
+        if group_array[i].empty: #save the index of the empty name to delete it after the FOR loop
             save=i
     del group_array[save]#Delete the empty name
     group_array_nan=df_clients.loc[df_clients['full name'].isnull()].reset_index(drop=True)#Create a datafrane with the nan values in full name
@@ -30,7 +30,8 @@ def correct_duplicate(df_clients):
             none_values=[not item for item in def_array[i]] # If exist detect the name of the index
             for j in range(len(none_values)):
                 for k in range(len(group_array[i])):
-                    if none_values[j]:
+                    if none_values[j] and j!=4: #Doesn't send the city of the duplicate, this is an error of the program and the test. The test says we consider a duplicate if has the same name or same email but has the same name is not necessary to be a duplicate it happens for example with Cedrick Jenkins, one of them is from england the other from cork so it is not the same person but has the same name. The code is going delete second cedrick Jenkins but in a real data, we must keep the two Jenkins
+                    #A solution from the previous problem is verify that the countries must to be exactly the same to be a duplicate, could it happen more problems like if the client go to another country. The best option is represent each client with a unique a ID, it means not have the same client with multiple IDs
                         if group_array[i].iloc[k][j]!='':
                             def_array[i][j]=group_array[i].iloc[k][j]#Change the value of the indexes in nan with the previous sorted values 
                             break

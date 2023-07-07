@@ -1,7 +1,9 @@
 from geotext import GeoText
 import pandas as pd
-
-
+#London also is a city in Canada 
+#Limerick is a town in united states
+replacements=[(21540,'Ireland'),(2465,'United Kingdom')]#We can add here if we see a difference in new clients, so if we want other country we can change the value in the dataframe for the other country that we want
+#Also if you don't know the index you can use this line of code list(df['name']).index('City')
 exceptions=['England','Scotland', 'Wales','Northern Ireland'] #This exception is created because their has a conflict with the libraries
 #Those countries are in the country United Kingdom but United kingdom is a country so those places are not in the country libraries
 #At the moment we see more exceptions countries we can add it here
@@ -22,16 +24,14 @@ def city_or_country(string): #This function identify the string as city or count
     except:
         return('','')
 def get_tuple_country(city):#When is a city this function detect the country
+    #This link has all the cities with their respective countries, we can create only a dictionary with United Kingdom and Ireland but if we have more clients in more countries this code will work better
     info_country=pd.read_csv('https://datahub.io/core/world-cities/r/world-cities.csv')
+    for i in replacements:#Here we use the replacement list
+        info_country['country'][i[0]]=i[1]
     index=list(info_country['name']).index(city)
     #Modify the output to a simple country name
     country=info_country.iloc[index][1]
     return country
-
-def replacements(replaces,df_clients):#Replace all the name of the countries (library geopy) that doesn't has the same name as the df
-    for i in replaces:
-        df_clients['country found'] = df_clients['country found'].replace(i[0], i[1])
-    return df_clients
 
 def add_columns_country_city(countries_sear,city_sear,df_clients):#Add the new columns with the respective value
     for i in range(len(df_clients['properties.country'])):#pass to each value of the dataframe
